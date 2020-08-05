@@ -57,16 +57,15 @@ public class PlaylistPlayCmd extends MusicCommand
     {
         if(event.getArgs().isEmpty())
         {
-            event.reply(event.getClient().getError()+" Playlist name not specified.");
-            return;
+            event.reply("Playlist name not specified. Automagically:tm: playing playlist \"gamin\"");
         }
-        Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs());
+        Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs().isEmpty() ? "gamin" : event.getArgs());
         if(playlist==null)
         {
             event.replyError("Unable to locate playlist `"+event.getArgs()+"`");
             return;
         }
-        event.getChannel().sendMessage(" Loading playlist **"+event.getArgs()+"** containing **"+playlist.getItems().size()+"** items...").queue(m ->
+        event.getChannel().sendMessage(" Loading playlist **"+(event.getArgs().isEmpty() ? "gamin" : event.getArgs())+"** containing **"+playlist.getItems().size()+"** items...").queue(m ->
         {
             AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             playlist.loadTracks(bot.getPlayerManager(), (at)->handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
@@ -78,7 +77,7 @@ public class PlaylistPlayCmd extends MusicCommand
                 playlist.getErrors().forEach(err -> builder.append("\n`[").append(err.getIndex()+1).append("]` **").append(err.getItem()).append("**: ").append(err.getReason()));
                 String str = builder.toString();
                 if(str.length()>2000)
-                    str = str.substring(0,1994)+" (...)";
+                    str = str.substring(0,1997)+"...";
                 m.editMessage(FormatUtil.filter(str)).queue();
             });
         });

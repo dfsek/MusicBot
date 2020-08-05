@@ -53,6 +53,8 @@ public class QueuedTrack implements Queueable
     @Override
     public String toString() 
     {
-        return "`[" + FormatUtil.formatTime(track.getDuration()) + "]` **" + track.getInfo().title + "** - <@" + track.getUserData(Long.class) + ">";
+        String title = track.getInfo().title.equalsIgnoreCase("Unknown title") ? "||[REDACTED]||" : track.getInfo().title;
+        String author = track.getInfo().author.equalsIgnoreCase("Unknown artist") ? "||[DATA EXPUNGED]||" : track.getInfo().author;
+        return "`[" + FormatUtil.formatTime(track.getDuration()) + "]` **" + title + " - " + author + "** - <@" + track.getUserData(Long.class) + ">";
     }
 }

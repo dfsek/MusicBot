@@ -110,7 +110,7 @@ public class QueueCmd extends MusicCommand
         if(ah.getPlayer().getPlayingTrack()!=null)
         {
             sb.append(ah.getPlayer().isPaused() ? JMusicBot.PAUSE_EMOJI : JMusicBot.PLAY_EMOJI).append(" **")
-                    .append(ah.getPlayer().getPlayingTrack().getInfo().title).append("**\n");
+                    .append(ah.getPlayer().getPlayingTrack().getInfo().title).append(" - ").append(ah.getPlayer().getPlayingTrack().getInfo().author).append("**\n");
         }
         return FormatUtil.filter(sb.append(success).append(" Current Queue | ").append(songslength)
                 .append(" entries | `").append(FormatUtil.formatTime(total)).append("` ")
