@@ -94,12 +94,10 @@ public class JMusicBot
                         
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
-                        new PlayCmd(bot),
+                        new PlaylistPlayCmd(bot),
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
                         new RemoveCmd(bot),
-                        new SearchCmd(bot),
-                        new SCSearchCmd(bot),
                         new ShuffleCmd(bot),
                         new SkipCmd(bot),
 
