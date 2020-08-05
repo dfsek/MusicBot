@@ -55,9 +55,20 @@ public class PlaylistPlayCmd extends MusicCommand
     @Override
     public void doCommand(CommandEvent event)
     {
-        if(event.getArgs().isEmpty())
+        AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
+        if(handler.getPlayer().getPlayingTrack()!=null && handler.getPlayer().isPaused())
         {
-            event.reply("Playlist name not specified. Automagically:tm: playing playlist \"gamin\"");
+            if(DJCommand.checkDJPermission(event))
+            {
+                handler.getPlayer().setPaused(false);
+                event.replySuccess("Resumed **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**.");
+            }
+            else
+                event.replyError("Only DJs can unpause the player!");
+            return;
+        } else if(event.getArgs().isEmpty() && handler.getPlayer().getPlayingTrack() == null)
+        {
+            event.reply("Playlist name not specified and player is not running. Automagically:tm: playing playlist \"gamin\"");
         }
         Playlist playlist = bot.getPlaylistLoader().getPlaylist(event.getArgs().isEmpty() ? "gamin" : event.getArgs());
         if(playlist==null)
@@ -67,7 +78,6 @@ public class PlaylistPlayCmd extends MusicCommand
         }
         event.getChannel().sendMessage(" Loading playlist **"+(event.getArgs().isEmpty() ? "gamin" : event.getArgs())+"** containing **"+playlist.getItems().size()+"** items...").queue(m ->
         {
-            AudioHandler handler = (AudioHandler)event.getGuild().getAudioManager().getSendingHandler();
             playlist.loadTracks(bot.getPlayerManager(), (at)->handler.addTrack(new QueuedTrack(at, event.getAuthor())), () -> {
                 StringBuilder builder = new StringBuilder(playlist.getTracks().isEmpty()
                         ? event.getClient().getWarning()+" No tracks were loaded!"

@@ -53,7 +53,7 @@ public class QueueCmd extends MusicCommand
         builder = new Paginator.Builder()
                 .setColumns(1)
                 .setFinalAction(m -> {try{m.clearReactions().queue();}catch(PermissionException ignore){}})
-                .setItemsPerPage(10)
+                .setItemsPerPage(15)
                 .waitOnSinglePage(false)
                 .useNumberedItems(true)
                 .showPageNumbers(true)
